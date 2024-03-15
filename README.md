@@ -11,7 +11,7 @@ makemore takes names and trains a model on this dataset. Once trained it will ma
 
 This series builds from using a bigram character model to more complex transformer models.
 
-In this lecture a bigram character model is built. A bigram model is a pair of consecutive character. Where one letter is used to predict the second character using a lookup table. q ... u, for example!
+In this lecture a bigram character model is built. A bigram model is a pair of consecutive character. Where one letter is used to predict the second character using a lookup table. q -> u, u is predicts to follow q for example.
 
 The bigram character model loads words into a list, creates bigrams from these words, stores the results in a model - a tensor array, creates probabilities from this model for next letter prediction given a starting character and generates new words. 
 
@@ -26,7 +26,7 @@ These concepts are explored:
 
 The makemore neural net uses the same data to create a training set, initalises weights in a model, and calculate the loss of the model and iteratively tune the weights using forward and backward passes. A softmax function is defined to convert model weights to a probability distribution which is used to generate outputs.
 
-In this part, data is loaded from a file into input and output lists as a training set. This contain values from 1 to 27 for each character and start/stop char '.'. An NN model which has 27 inputs and 27 outputs is created, effectively a 27,27 matrix with random negative and positive values. This model is to be trained. The input training set is one hot encoded for each item resulting in x,27 xenc shape. These are matmul together (x,27) giving logcounts. a softmax is used on these values to turn them into probabilities. exp(), then sum(1). The loss is calculated by working out the prob of the next letter, taking its log, summing it over the training set, averaging it and taking the negative. 
+In this part, data is loaded from a file into input and output lists as a training set. This contain values from 1 to 27 for each character and start/stop char `.`. An NN model which has 27 inputs and 27 outputs is created, effectively a `(27,27)` matrix with random negative and positive values. This model is to be trained. The input training set is one hot encoded for each item resulting in x,27 xenc shape. These are matrix multiplied (matmul) together `(x,27)` giving logcounts. a softmax is used on these values to turn them into probabilities. exp(), then sum(1). The loss is calculated by working out the prob of the next letter, taking its log, summing it over the training set, averaging it and taking the negative. 
 
 ## building makemore: MLP
 
@@ -61,7 +61,27 @@ Topics covers are:
 
 Still focussed on MLP. why it's hard to optimise, by looking at gradients and activitiation and how they behave during training. It's harder to optimise these.
 
+#### Fixing the initial loss
+The initial loss is based on a random distribution of weights. loss is ~27.9, whereas a uniform distribution would be close to 3.3. 
+Weights are initalised with extreme values which mean that many of the training runs initially are to reduce this to more normal values.
+This gives the hocky stick appearance for loss for runs. What we can do is set the bias to 0 and the W to a fraction of there normalised
+values to give a better starting loss. We could set the weights also to 0 but for some reasons, it's better if they are not zero. 
 
+#### Fixing the saturated tanh
+
+tanh at extreme values takes on values of either 1 or -1. at these points the gradient is very close to 0 and so movement away from these values
+is extremely hard. If the hidden layer after passing through the tanh function is 1 or -1 that that is bad for each neuron. The optimisation is stuck
+and. the tanh function squash the input to values between 1 and -1. It's possible to see for each training run if the tanh is in this bad position. 
+If this occurs for all training examples this is bad and the neuron is dead! Permanent brain damage has occured. It can also occur during 
+training of the learning rate is too high, this can knock out neurons into the extreme value region and they never come back as the grad is 0.
+
+The way to prevent this is to set scale the weights and bias feeding into tanh, the preactivations, which normalises the input. This makes
+the distribution out of tanh more uniform and less likely to be > 0.99. 
+
+## Kaiming Normal
+When we multiply our randomised inputs with randomised weights of the initial layer, we increase standard deviation. We want to normalise our weights by the scale of the fan-in. We can use [kaiming normal](https://pytorch.org/docs/stable/nn.init.html) to set the gain correctly. 
+
+It used to be important to set the initialisation accurately as the network was fragile. Now less important as there are various techniques like optimises, residual connection, residual layers.
 
 
 
