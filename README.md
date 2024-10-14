@@ -1,9 +1,16 @@
 # nn-zero-to-hero
 Building and delibrate practice of machine learning concepts. Following Andrej Karpathy's [Neural Network: Zero to Hero](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) series
 
-## Building micrograd
+## Lesson 1: Building micrograd
 
-micrograd is a tiny neural net engine which implements back propagation. It construct a neural net, made up of layers of neurons. A neuron consist of individual mathematical operations which are constructioned into a DAG. The DAG is traversed for forward and backward pass to train the neural net for a training set. All this is done using python classes.
+micrograd is a tiny neural net engine which implements back propagation. The neural net consists of layers of neurons. A neuron is made of individual mathematical operations which are constructioned into a DAG. The DAG is traversed for forward and backward pass to train the neural net for a training set. All this is done using python classes.
+
+
+
+
+- first exploring a simple function and graphing 
+- finding an approximation to the derivative at certain x values.
+- finding partial derivatives to a 
 
 ## Building makemore: bigrams and simple neural network
 
@@ -83,25 +90,25 @@ When we multiply our randomised inputs with randomised weights of the initial la
 
 It used to be important to set the initialisation accurately as the network was fragile. Now less important as there are various techniques like optimises, residual connection, residual layers.
 
-
-
 ### Links
 - [torch broadcasting semantics](https://pytorch.org/docs/stable/notes/broadcasting.html)
 - [torch multinominal](https://pytorch.org/docs/stable/generated/torch.multinomial.html)
 - maximum likelihood estimation
 
 
-
-
-
-
 ## install 
 
 Setup by using a virtual environment and running:
 
+```bash
+pip install jupyter torch numpy matplotlib graphvix
 ```
-pip install jupyter torch numpy matplotlib
-```
+
+Install graphviz using homebrew : `brew install graphviz`
+
+## Explaination of terms
+
+DAG - Directed acyclic graph - a directed graph with no cycles.
 
 ## other github attempts
 
