@@ -3,14 +3,9 @@ Building and delibrate practice of machine learning concepts. Following Andrej K
 
 ## Lesson 1: Building micrograd
 
-micrograd is a tiny neural net engine which implements back propagation. The neural net consists of layers of neurons. A neuron is made of individual mathematical operations which are constructioned into a DAG. The DAG is traversed for forward and backward pass to train the neural net for a training set. All this is done using python classes.
+micrograd is a tiny neural net engine which implements back propagation. The neural net consists of layers of neurons. A neuron is made of individual mathematical operations which are constructioned into a DAG. A Value object which holds the graph of mathematical operations such as `+`, `-`, `*`, `/`, `pow()`, `exp()`,`tanh()` is developed and used to model a perceptron. Perceptrons are ordered into layers to build a multi-layer perceptron (MLP), the neural net. The Value object calculates the partial derivation to determine the gradient with respect to the final outputs for each Value.
 
-
-
-
-- first exploring a simple function and graphing 
-- finding an approximation to the derivative at certain x values.
-- finding partial derivatives to a 
+The model is trained against a simple test training set and the loss calculated. Back propogation through the Value object is used to determine the direction and extend to change the weights and bias of each perceptron neuron. The aim being to reduce the loss of the output over a number of training runs.
 
 ## Building makemore: bigrams and simple neural network
 
