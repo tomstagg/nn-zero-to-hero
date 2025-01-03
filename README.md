@@ -44,6 +44,8 @@ The makemore neural net uses the same data to create a training set, initalises 
 
 In this part, data is loaded from a file into input and output lists as a training set. This contain values from 1 to 27 for each character and start/stop char `.`. An NN model which has 27 inputs and 27 outputs is created, effectively a `(27,27)` matrix with random negative and positive values. This model is to be trained. The input training set is one hot encoded for each item resulting in x,27 xenc shape. These are matrix multiplied (matmul) together `(x,27)` giving logcounts. a softmax is used on these values to turn them into probabilities. exp(), then sum(1). The loss is calculated by working out the prob of the next letter, taking its log, summing it over the training set, averaging it and taking the negative. 
 
+## Lesson 02: 
+
 ## building makemore: MLP
 
 To improve the model we need to take more characters as inputs. We tried this as a bigram and a trigram model in the previous section. The problem with this is the model blows up exponentially 27^3 = 19,600. 
@@ -107,17 +109,11 @@ It used to be important to set the initialisation accurately as the network was 
 
 ## install 
 
-Setup by using a virtual environment and running:
-
-```bash
-pip install jupyter torch numpy matplotlib graphvix
-```
-
+Using `uv` to manage project and dependencies.
 Install graphviz using homebrew : `brew install graphviz`
 
-## Explaination of terms
+running juypter: `uv run --with jupyter jupyter lab`
 
-DAG - Directed acyclic graph - a directed graph with no cycles.
 
 ## other github attempts
 
