@@ -1,11 +1,25 @@
 # nn-zero-to-hero
-Building and delibrate practice of machine learning concepts. Following Andrej Karpathy's [Neural Network: Zero to Hero](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) series
 
-## Lesson 1: Building micrograd
+Building skills in machine learning concepts by following Andrej Karpathy's [Neural Network: Zero to Hero](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) series.
+
+
+
+## Lesson 01: Building micrograd
+
+Building a multi-layer perception, a neural net from first principles to classify datasets.
 
 micrograd is a tiny neural net engine which implements back propagation. The neural net consists of layers of neurons. A neuron is made of individual mathematical operations which are constructioned into a DAG. A Value object which holds the graph of mathematical operations such as `+`, `-`, `*`, `/`, `pow()`, `exp()`,`tanh()` is developed and used to model a perceptron. Perceptrons are ordered into layers to build a multi-layer perceptron (MLP), the neural net. The Value object calculates the partial derivation to determine the gradient with respect to the final outputs for each Value.
 
-The model is trained against a simple test training set and the loss calculated. Back propogation through the Value object is used to determine the direction and extend to change the weights and bias of each perceptron neuron. The aim being to reduce the loss of the output over a number of training runs.
+The model is trained against a simple test training set and the loss calculated. Back propogation through the Value object is used to determine the changes to the the weights and bias of each perceptron neuron. The aim being to reduce the loss of the output over a number of training runs. The model is used to determine a hyperplane which is used to classify input vectors. 
+
+This lesson covers: 
+- setup of jupyter to build, test and visualise neural networks
+- walkthough of partial differentials and backprogration using graphviz
+- building a Value object with required math operations required with associated partial differentials for back propogation
+- building activitation functions
+- using pytorch as a comparision
+- creating the nn library based on the Value object
+- writing the loss function and training the network
 
 ## Building makemore: bigrams and simple neural network
 
