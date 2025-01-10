@@ -16,14 +16,43 @@ This lesson covers:
 - setup of jupyter to build, test and visualise neural networks
 - walkthough of partial differentials and backprogration using graphviz
 - building a Value object with required math operations required with associated partial differentials for back propogation
-- building activitation functions
+- building activation functions
 - using pytorch as a comparision
 - creating the nn library based on the Value object
 - writing the loss function and training the network
+- using the model to make predictions
+
+## Lesson 02: Building makemore: bigrams
+
+makemore takes names and trains a model on this dataset. Once trained it will make more names in the same style, but unique.
+
+The lesson focuses on building a bigram character model to predict next letters to create new names. The second part of the lesson use a neural network approach, with pytorch, to achive the same result. The model is traind
+
+A bigram model is a pair of consecutive characters. The first letter is used to predict the second character using a probability distribution.
+
+A bigram model is built using 32K training words. The probabilities from this model are used for next letter prediction given a starting character. 
+
+The following are explored:
+- parsing words into combination to build a bigrams model, loading the frequencies into a tensor
+- visualising the distribution using matplotlib
+- using torch multinomial to sample from the distribution to extract the next letter
+- investigating torch broadcast semantics and dangers, and using broadcasting for suming rows to improve efficiency
+- using the model to generate new names
+- investigating what loss means for this data and how to calculate negative log likelihood
+
+The second part of the lesson focusses on creating a neural net solution and train it on the words to generate new names.
+
+This covers:
+- creating training sets for inputs and outputs
+- creating a matrix of weights for the NN
+- using one hot encoding for input training set
+- normalising the nn output using softmax function - taking logits, convert to counts and producing a prob distribution
+- calculating the loss, the negative log likelihood
+
+
 
 ## Building makemore: bigrams and simple neural network
 
-makemore takes names and trains a model on this dataset. Once trained it will make more names in the same style, but unique.
 
 This series builds from using a bigram character model to more complex transformer models.
 
@@ -112,7 +141,7 @@ It used to be important to set the initialisation accurately as the network was 
 Using `uv` to manage project and dependencies.
 Install graphviz using homebrew : `brew install graphviz`
 
-running juypter: `uv run --with jupyter jupyter lab`
+running jupyter: `uv run --with jupyter jupyter lab`
 
 
 ## other github attempts
