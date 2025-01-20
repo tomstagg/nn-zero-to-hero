@@ -26,7 +26,8 @@ This lesson covers:
 
 makemore takes names and trains a model on this dataset. Once trained it will make more names in the same style, but unique.
 
-The lesson focuses on building a bigram character model to predict next letters to create new names. The second part of the lesson use a neural network approach, with pytorch, to achive the same result. The model is traind
+The lesson focuses on building a bigram character model to predict next letters to create new names. Given an input character, a output probability distribution is output and next character is sample from it. 
+The second part of the lesson use a neural network approach, with pytorch, to achive the same result.
 
 A bigram model is a pair of consecutive characters. The first letter is used to predict the second character using a probability distribution.
 
@@ -36,22 +37,27 @@ The following are explored:
 - parsing words into combination to build a bigrams model, loading the frequencies into a tensor
 - visualising the distribution using matplotlib
 - using torch multinomial to sample from the distribution to extract the next letter
-- investigating torch broadcast semantics and dangers, and using broadcasting for suming rows to improve efficiency
+- investigating torch broadcast semantics and using broadcasting for suming rows to improve efficiency
 - using the model to generate new names
 - investigating what loss means for this data and how to calculate negative log likelihood
+- adding model smoothing to prevent inf loss
 
 The second part of the lesson focusses on creating a neural net solution and train it on the words to generate new names.
+The neural net is develop for both bigram and trigram cases. It simply consists of a tensor of weights  associated to each input character which is used to define a output a vector of logits, the unnormalised predictions. These are normalised using a softmax function to provide a distribution of probabilities for the next character. The negative loss likelihood is calculated from these outputs and used to adjust the weights using gradients calculated via backpropogation.
 
 This covers:
 - creating training sets for inputs and outputs
-- creating a matrix of weights for the NN
+- creating a matrix of weights for the neural net
 - using one hot encoding for input training set
 - normalising the nn output using softmax function - taking logits, convert to counts and producing a prob distribution
 - calculating the loss, the negative log likelihood
+- upgrading model with 2 x 27 one hot encoded inputs for a trigram nn model
+- using the model with multinominal to sample output characters to build new naemes
+- spliting dataset into training, dev and test datasets and evaluating on them
+- tuning smoothing
+- simplification without one_hot and use of cross_entropy instead
 
-
-
-## Building makemore: bigrams and simple neural network
+## Lesson 03 
 
 
 This series builds from using a bigram character model to more complex transformer models.
@@ -142,6 +148,8 @@ Using `uv` to manage project and dependencies.
 Install graphviz using homebrew : `brew install graphviz`
 
 running jupyter: `uv run --with jupyter jupyter lab`
+
+troubleshoot jupyter venv: use "Python 3 (ipykernel)" in top right
 
 
 ## other github attempts
