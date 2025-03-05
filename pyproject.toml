@@ -10,3 +10,6 @@ dependencies = [
     "numpy<2",
     "torch==2.2.2",
 ]
+
+[tool.uv.workspace]
+members = ["llm-sandbox"]
