@@ -6,23 +6,23 @@ Building skills in machine learning concepts by following Andrej Karpathy's [Neu
 
 | Lesson | Title              | Description                                                                                                         | Link |
 | ------ | ------------------ | ------------------------------------------------------------------------------------------------------------------- | ---- |
-| 01     | micrograd | Creating a MLP called micrograd from first principals and using it for classification                                                |
-| 02     | Building makemore - bigram and nn  | Creating a bigram and basic neural network and train then on peoples names so that it can generate new unique names |
-| 03     | makemore MLP - MLP | 
+| 01     | micrograd | Creating a MLP called micrograd from first principles and using it for classification                                                |
+| 02     | Building makemore - bigram and nn  | Creating a bigram and basic neural network and training them on people's names so that it can generate new unique names |
+| 03     | makemore MLP - MLP |
 
 ## Lesson 01: Building micrograd
 
-Building a multi-layer perception, a neural net from first principles to classify datasets.
+Building a multi-layer perceptron, a neural net from first principles to classify datasets.
 
-micrograd is a tiny neural net engine which implements back propagation. The neural net consists of layers of neurons. A neuron is made of individual mathematical operations which are constructed into a DAG. A Value object which holds the graph of mathematical operations such as `+`, `-`, `*`, `/`, `pow()`, `exp()`,`tanh()` is developed and used to model a perceptron. Perceptrons are ordered into layers to build a multi-layer perceptron (MLP), the neural net. The Value object calculates the partial derivation to determine the gradient with respect to the final outputs for each Value.
+micrograd is a tiny neural net engine which implements backpropagation. The neural net consists of layers of neurons. A neuron is made of individual mathematical operations which are constructed into a DAG. A Value object which holds the graph of mathematical operations such as `+`, `-`, `*`, `/`, `pow()`, `exp()`,`tanh()` is developed and used to model a perceptron. Perceptrons are ordered into layers to form a multi-layer perceptron (MLP), the neural net. The Value object calculates the partial derivative to determine the gradient with respect to the final outputs for each Value.
 
-The model is trained against a simple test training set and the loss calculated. Back propagation through the Value object is used to determine the changes to the weights and bias of each perceptron neuron. The aim being to reduce the loss of the output over a number of training runs. The model is used to determine a hyperplane which is used to classify input vectors.
+The model is trained against a simple test training set and the loss calculated. Backpropagation through the Value object is used to determine the changes to the weights and bias of each perceptron neuron. The aim is to reduce the loss of the output over a number of training runs. The model is used to determine a hyperplane which is used to classify input vectors.
 
 This lesson covers:
 
 - setup jupyter to build, test and visualise neural networks
-- walkthrough of partial differentials and backprogration using graphviz
-- building a Value object with required math operations required with associated partial differentials for back propagation
+- walkthrough of partial differentials and backpropagation using graphviz
+- building a Value object with the required math operations and associated partial differentials for backpropagation
 - building activation functions
 - using PyTorch as a comparison
 - creating the nn library based on the Value object
@@ -33,14 +33,14 @@ This lesson covers:
 
 makemore takes names and trains a model on this dataset. Once trained it will make more names in the same style, but unique and hopefully name-like.
 
-The lesson focuses on building a bigram character model to predict next letters to create new names. Given an input character, the logits output defines a character probability distribution from which the next character is sample.
-The second part of the lesson use a neural network approach, with PyTorch, to achieve the same result.
+The lesson focuses on building a bigram character model to predict next letters to create new names. Given an input character, the logits output defines a character probability distribution from which the next character is sampled.
+The second part of the lesson uses a neural network approach, with PyTorch, to achieve the same result.
 
 A bigram model is a pair of consecutive characters. The first letter is used to predict the second character using a probability distribution. The model is built using 32K training words. The probabilities from this model are used for next letter prediction given a starting character.
 
 This covers:
 
-- parsing words into combination to build a bigrams model, loading the frequencies into a tensor
+- parsing words into combinations to build a bigrams model, loading the frequencies into a tensor
 - visualising the distribution using matplotlib
 - using torch multinomial to sample from the distribution to extract the next letter
 - investigating torch broadcast semantics and using broadcasting for summing rows to improve efficiency
@@ -48,18 +48,18 @@ This covers:
 - investigating what loss means for this data and how to calculate negative log likelihood
 - adding model smoothing to prevent infinite loss
 
-The second part of the lesson focuses on creating a basic neural net solution and train it on the words to generate new names.
-The neural net is developed for both bigram and trigram cases. It simply consists of a tensor of weights associated to each input character which is used to define an output vector of logits, the unnormalised predictions. These are normalised using a softmax function to provide a distribution of probabilities for the next character. The negative loss likelihood is calculated from these outputs and used to adjust the weights using gradients calculated via backpropogation. Concepts are explored in depth before using higher-level functions to simplify.
+The second part of the lesson focuses on creating a basic neural net solution and training it on the words to generate new names.
+The neural net is developed for both bigram and trigram cases. It simply consists of a tensor of weights associated to each input character which is used to define an output vector of logits, the unnormalised predictions. These are normalised using a softmax function to provide a distribution of probabilities for the next character. The negative log likelihood is calculated from these outputs and used to adjust the weights using gradients calculated via backpropagation. Concepts are explored in depth before using higher-level functions to simplify.
 
 This covers:
 
 - creating training sets for inputs and outputs
 - creating a matrix of weights for the neural net
-- using one hot encoding for input training set
-- normalising the nn output using softmax function - taking logits, convert to counts and producing a probability distribution
+- using one hot encoding for the input training set
+- normalising the nn output using softmax function - taking logits, converting to counts and producing a probability distribution
 - calculating the loss, the negative log likelihood
 - upgrading model with 2 x 27 one hot encoded inputs for a trigram nn model
-- using the model with torch. multinominal to sample output characters to build new names
+- using the model with torch.multinomial to sample output characters to build new names
 - splitting dataset into training, dev and test datasets and evaluating on them
 - model smoothing as regularisation loss
 - simplification without one_hot and use of cross_entropy instead
@@ -68,20 +68,20 @@ This covers:
 
 To improve the model we need to take more characters as inputs. We tried this as a bigram and a trigram model in the previous section. The problem with this is the model becomes exponentially complex with each additional input char, 27^3 = 19,600.
 
-Instead, we'll follow the paper [A Neural Probablistic Language Model - Bengio et al.](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf)
+Instead, we'll follow the paper [A Neural Probabilistic Language Model - Bengio et al.](https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf)
 
-This model calculates an embedding for each input character. An embedding is a character feature vector, from 2 to 30 dimension in our case. It generalises the character features. This x character input is convert to x embeddings which are manipulated with pytorch to provide a concatenated embedding for a hidden layer. The hidden layer of neurons is a fully connected layer of 100 - 300 neurons which are connected to 27 output neurons, providing the logits vector which is used to calculate via a softmax function, the next character probability distribution. Various hyperparameter configuration options and simplifications are made with the model trained on subset of the full dataset, and evaluated on dev/validation and test sets. Back propagation is used to adjust the model weights to minimise the loss.
+This model calculates an embedding for each input character. An embedding is a character feature vector, from 2 to 30 dimensions in our case. It generalises the character features. This x character input is converted to x embeddings which are manipulated with pytorch to provide a concatenated embedding for a hidden layer. The hidden layer of neurons is a fully connected layer of 100 - 300 neurons which are connected to 27 output neurons, providing the logits vector which is used to calculate, via a softmax function, the next character probability distribution. Various hyperparameter configuration options and simplifications are made with the model trained on a subset of the full dataset, and evaluated on dev/validation and test sets. Backpropagation is used to adjust the model weights to minimise the loss.
 
 The lesson covers:
 
 - setup of initial char lookup embedding
-- using a character block variable to generation of dataset to train the model, initially 3 char inputs
-- investigate options to encoding input dataset with embedding - one hot vs tensor index
-- manipulation of embedding to allow multiplication with hidden layer - using pytorch internals, and seeing that data is contiguously stored
+- using a character block variable for generation of a dataset to train the model, initially 3 char inputs
+- investigating options for encoding the input dataset with embedding - one hot vs tensor index
+- manipulation of the embedding to allow multiplication with the hidden layer - using pytorch internals, and seeing that data is contiguously stored
 - using cross entropy rather than explicit calculations to deal with logits that are extreme
 - using mini-batches to speed up each iteration
 - working out the learning rate to use
-- using training, dev and tests set to avoid overfitting
+- using training, dev and test sets to avoid overfitting
 - viewing loss progress over iterations
 - visualising 2d character embedding
 - trialing different hyperparameters to determine loss in training sets
@@ -91,50 +91,50 @@ Exercises involve attempting to find the best hyperparameter configuration to mi
 
 ## Lesson 04: Building makemore: Activations, Gradients and BatchNorm
 
-Focussing on the internals of MLPs and investing the initial state and fixing if for the initial loss and saturated activation tanh function. Rather than setting these manually we calculate the initiation weights using a "kaiming init" approach. We investigate batch normalisation to control the statistics of activiations in the neural net.
+Focusing on the internals of MLPs and investigating the initial state and fixing it for the initial loss and saturated tanh activation function. Rather than setting these manually we calculate the initial weights using a "Kaiming init" approach. We investigate batch normalisation to control the statistics of activations in the neural net.
 
-We calculate the initialse scaling using "Kaiming init" from the [Kaiming init paper](https://arxiv.org/abs/1502.01852). This is defined in pytorch at [torch.nn.init.kaiming*normal*](https://pytorch.org/docs/stable/nn.init.html#torch.nn.init.kaiming_normal_) where gains are defined for different activation functions.
+We calculate the initial scaling using "Kaiming init" from the [Kaiming init paper](https://arxiv.org/abs/1502.01852). This is defined in pytorch at [torch.nn.init.kaiming*normal*](https://pytorch.org/docs/stable/nn.init.html#torch.nn.init.kaiming_normal_) where gains are defined for different activation functions.
 
-Still focussed on MLP. why it's hard to optimise, by looking at gradients and activitiation and how they behave during training. It's harder to optimise these.
+Still focused on MLP — why it's hard to optimise, by looking at gradients and activations and how they behave during training.
 
 #### Fixing the initial loss
 
-The initial loss is based on a random distribution of weights. loss is ~27.9, whereas a uniform distribution would be close to 3.3.
-Weights are initalised with extreme values which mean that many of the training runs initially are to reduce this to more normal values.
-This gives the hocky stick appearance for loss for runs. What we can do is set the bias to 0 and the W to a fraction of there normalised
-values to give a better starting loss. We could set the weights also to 0 but for some reasons, it's better if they are not zero.
+The initial loss is based on a random distribution of weights. Loss is ~27.9, whereas a uniform distribution would be close to 3.3.
+Weights are initialised with extreme values which mean that many of the training runs initially are spent reducing this to more normal values.
+This gives the hockey stick appearance for loss over runs. What we can do is set the bias to 0 and the W to a fraction of their normalised
+values to give a better starting loss. We could set the weights also to 0 but for some reason it's better if they are not zero.
 
 #### Fixing the saturated tanh
 
-tanh at extreme values takes on values of either 1 or -1. at these points the gradient is very close to 0 and so movement away from these values
-is extremely hard. If the hidden layer after passing through the tanh function is 1 or -1 that that is bad for each neuron. The optimisation is stuck
-and. the tanh function squash the input to values between 1 and -1. It's possible to see for each training run if the tanh is in this bad position.
-If this occurs for all training examples this is bad and the neuron is dead! Permanent brain damage has occured. It can also occur during
-training of the learning rate is too high, this can knock out neurons into the extreme value region and they never come back as the grad is 0.
+tanh at extreme values takes on values of either 1 or -1. At these points the gradient is very close to 0 and so movement away from these values
+is extremely hard. If the hidden layer after passing through the tanh function is 1 or -1 that is bad for each neuron. The optimisation is stuck
+and the tanh function squashes the input to values between 1 and -1. It's possible to see for each training run if the tanh is in this bad position.
+If this occurs for all training examples the neuron is dead — permanent brain damage has occurred. It can also occur during
+training if the learning rate is too high; this can knock out neurons into the extreme value region and they never come back as the gradient is 0.
 
-The way to prevent this is to set scale the weights and bias feeding into tanh, the preactivations, which normalises the input. This makes
+The way to prevent this is to scale the weights and bias feeding into tanh, the preactivations, which normalises the input. This makes
 the distribution out of tanh more uniform and less likely to be > 0.99.
 
 ## Kaiming Normal
 
-When we multiply our randomised inputs with randomised weights of the initial layer, we increase standard deviation. We want to normalise our weights by the scale of the fan-in. We can use [kaiming normal](https://pytorch.org/docs/stable/nn.init.html) to set the gain correctly.
+When we multiply our randomised inputs with randomised weights of the initial layer, we increase the standard deviation. We want to normalise our weights by the scale of the fan-in. We can use [Kaiming Normal](https://pytorch.org/docs/stable/nn.init.html) to set the gain correctly.
 
-It used to be important to set the initialisation accurately as the network was fragile. Now less important as there are various techniques like optimises, residual connection, residual layers.
+Accurate initialisation used to be critical as the network was fragile. It is now less important as there are various techniques like optimisers, residual connections, and residual layers.
 
 ## Batch Normalisation
 
-Batch normalisation is used to control the statistics of activiations in the neural net. batchNorm layers are added to the network, after matmul, linear or convulational layers to ensure the activations are not too high and low. If they weren't there then the non-linear activations function, tanh, can become saturated, going to +/- 1 and the gradient is 0. The batchnorm has gain and bias parameters, trained using backprop and two buffers, mean and std which are not trained using backprop. The buffers are used to center input batch to unit gaussian and then scaling with gain and shifting using the bias parameters.
+Batch normalisation is used to control the statistics of activations in the neural net. BatchNorm layers are added to the network after matmul, linear or convolutional layers to ensure the activations are not too high or low. Without them, the non-linear activation function (tanh) can become saturated, going to +/- 1 with a gradient of 0. The BatchNorm layer has gain and bias parameters trained using backprop, and two buffers — mean and std — which are updated via running statistics rather than backprop. The buffers are used to centre the input batch to a unit Gaussian, then scaled with the gain and shifted using the bias parameters.
 
-Brief overview of Resnet used for CNN. Implementation (here)[https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py]. In the `Bottleneck` class you can see `conv1` - the linear layer, `bn1` the batchNorm and `relu` the activation (non-linear) layer. The `__init__` is the model initalisation. The `conv1x1` and `con3x3` are initalised with bias = False, in the same way as we have removed the bias from the linear layer.
+Brief overview of ResNet used for CNN. Implementation [here](https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py). In the `Bottleneck` class you can see `conv1` - the linear layer, `bn1` the BatchNorm and `relu` the activation (non-linear) layer. The `__init__` is the model initialisation. The `conv1x1` and `conv3x3` are initialised with bias = False, in the same way as we have removed the bias from the linear layer.
 
-Focusing on Pytorch equivalents of our code:
+Focusing on PyTorch equivalents of our code:
 
-- **nn.Linear** - Wx + b. Need to know the fan in and fan out. Including an optional bias. You would not need a bias if the layer is followed by a normalisation layer. Weights are initialised similar to kaiming init but without the gain.
-- **nn.Batchnorm** - input is the hidden layer size, 200, for us, and the eps which is for numeric stability, and momentum - which is high or low dependent on batch size. You need to avoid thrashing around. So momentum should be low if the batchsize is low, and can be higher for more represenative examples between training sets. Affine, not sure what this does. track_running_stats = True. used if you are caluclating batch mean and std during the training run, as opposed to seperately as a follow on step after training.
+- **nn.Linear** - Wx + b. Need to know the fan in and fan out, including an optional bias. You would not need a bias if the layer is followed by a normalisation layer. Weights are initialised similar to Kaiming init but without the gain.
+- **nn.BatchNorm** - input is the hidden layer size (200 for us), and the eps which is for numeric stability, and momentum — which should be high or low depending on batch size. You need to avoid thrashing around, so momentum should be low if the batch size is small, and can be higher for more representative batches. `track_running_stats = True` is used if you are calculating batch mean and std during the training run, as opposed to separately as a follow-on step after training.
 
 # Summary
 
-Important of setting the activation and gradients and their stats in nn. Becomes important as networks get bigger. If the activations are too confident initially, you get hockey stick loss. If you avoid this initially you get better initial loss and better final loss. We discussed setting weights by making them closer to zero initially. It's not possible for deeper NN, with many layer, it is much hard to set weight to be uniform across the NN. This is where Normalisation comes in, batchnorm, is one implementation of this. You can put it throughout the NN, and if you want unit gausian activitation, you can make them that (mean= 0 std=1). We folded the batch norm std and mean into the training run, updating with a momentum. No one likes the batch norm layer, as you are coupling training example, you can instead use rootnorm or layernorm in more recent DL.
+The importance of setting activations and gradients and their statistics in a neural net becomes critical as networks get deeper. If the activations are too confident initially, you get hockey stick loss. Avoiding this gives better initial and final loss. We discussed setting weights closer to zero initially. This approach doesn't scale to deeper networks with many layers — it is much harder to set weights to be uniform across the whole network. This is where normalisation comes in; BatchNorm is one implementation of this. You can put it throughout the network, and if you want unit Gaussian activations you can enforce that (mean=0, std=1). We folded the running mean and std into the training loop, updated via a momentum term. No one likes the BatchNorm layer, as it couples training examples; you can instead use LayerNorm or RMSNorm in more recent deep learning.
 
 ### Links
 
