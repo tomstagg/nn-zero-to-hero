@@ -157,6 +157,26 @@ running jupyter: `uv run --with jupyter jupyter lab`
 
 troubleshoot jupyter venv: use "Python 3 (ipykernel)" in top right
 
+### Notebook git filter (nbstripout)
+
+`nbstripout` is installed as a dev dependency and strips cell outputs from notebooks before staging, keeping diffs clean.
+
+After cloning, install the git filter manually:
+
+```bash
+uv run nbstripout --install
+```
+
+Then update the filter commands in `.git/config` to use `uv run` rather than the hardcoded venv path:
+
+```bash
+git config filter.nbstripout.clean "uv run nbstripout"
+git config filter.nbstripout.smudge cat
+git config diff.ipynb.textconv "uv run nbstripout -t"
+```
+
+The filter runs automatically on `git add` — no manual steps needed day-to-day. Your local notebook outputs are preserved in the editor; only the stripped version is committed.
+
 ## other github attempts
 
 https://github.com/Matjaz12/Neural-Networks-Zero-to-Hero/tree/main
