@@ -4,11 +4,17 @@ Building skills in machine learning concepts by following Andrej Karpathy's [Neu
 
 ## Learning the fundamentals of neural networks
 
-| Lesson | Title              | Description                                                                                                         | Link |
-| ------ | ------------------ | ------------------------------------------------------------------------------------------------------------------- | ---- |
-| 01     | micrograd | Creating a MLP called micrograd from first principles and using it for classification                                                |
-| 02     | Building makemore - bigram and nn  | Creating a bigram and basic neural network and training them on people's names so that it can generate new unique names |
-| 03     | makemore MLP - MLP |
+| Lesson | Title                                          | Description                                                                                                          | Status |
+| ------ | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------ |
+| 01     | micrograd                                      | Building a backpropagation engine and MLP from first principles, used for classification                             | ✅ Done |
+| 02     | makemore pt1 — bigrams and neural network      | Building a bigram character model and basic neural network, trained on names to generate new ones                    | ✅ Done |
+| 03     | makemore pt2 — MLP                             | Building an MLP with character embeddings following Bengio et al. 2003                                               | ✅ Done |
+| 04     | makemore pt3 — activations, gradients, BatchNorm | Investigating MLP internals, Kaiming init, and batch normalisation                                                 | ✅ Done |
+| 05     | makemore pt4 — becoming a backprop ninja       | Manual backpropagation through a neural net without using PyTorch autograd                                           | 🔜 Todo |
+| 06     | makemore pt5 — WaveNet                         | Implementing a WaveNet-style hierarchical architecture for name generation                                           | 🔜 Todo |
+| 07     | Let's build GPT                                | Building a Generatively Pretrained Transformer (nanoGPT) from scratch                                               | 🔜 Todo |
+| 08     | Let's build the GPT Tokenizer                  | Building a BPE tokenizer from scratch, as used in GPT-2 and GPT-4                                                   | 🔜 Todo |
+| 09     | Let's reproduce GPT-2                          | Reproducing the GPT-2 (124M) model and training it                                                                  | 🔜 Todo |
 
 ## Lesson 01: Building micrograd
 
