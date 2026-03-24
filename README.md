@@ -35,6 +35,8 @@ This lesson covers:
 - writing the loss function and training the network
 - using the model to make predictions
 
+![Micrograd classification result](01_micrograd/classification-result.png)
+
 ## Lesson 02: Building makemore: bigrams and basic neural network approach
 
 makemore takes names and trains a model on this dataset. Once trained it will make more names in the same style, but unique and hopefully name-like.
@@ -153,7 +155,7 @@ The importance of setting activations and gradients and their statistics in a ne
 Using `uv` to manage project and dependencies.
 Install graphviz using homebrew : `brew install graphviz`
 
-running jupyter: `uv run --with jupyter jupyter lab`
+running jupyter: `uv run jupyter lab`
 
 troubleshoot jupyter venv: use "Python 3 (ipykernel)" in top right
 
